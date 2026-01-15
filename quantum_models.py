@@ -16,14 +16,15 @@ class QuantumActor:
         @qml.qnode(self.dev, interface="jax", diff_method="parameter-shift")
         def circuit(x, theta):
             theta = jnp.asarray(theta)
+            #first layer Hadamard layers for initializing superposition
             for i in range(n_qubits):
                 qml.Hadamard(wires=i)
-            for l in range(m_layers):
-                for i in range(n_qubits):
-                    qml.RX(x[i], wires=i)
-                for i in range(n_qubits - 1):
+            for l in range(m_layers): # we only have one layers
+                for i in range(len(x)): # this is the change we made we don't just go through the number of qubits we have but we go through the whole data
+                    qml.RX(x[i], wires=i) # we turn the whole data into quantum rotation angle
+                for i in range(n_qubits - 1): #entanglement
                     qml.CZ(wires=[i, i+1])
-                for i in range(n_qubits):
+                for i in range(n_qubits): #trainable parameter
                     qml.RY(theta[l][i], wires=i)
             return [qml.expval(qml.PauliZ(i)) for i in range(n_qubits)]
 
@@ -32,8 +33,23 @@ class QuantumActor:
 
     def __call__(self, x, theta=None):
         theta = theta if theta is not None else self.theta
-        print("Theta Shape Within Actor __call__: ", theta.shape)
-        return self.qnode(x, theta)
+        # print("Theta Shape Within Actor __call__: ", theta.shape)
+        output = self.qnode(x, theta
+        # circuits outputs is  list of scalars (length = n_qubits)
+        # Action space is 5-dim (VX, VY, VZ, Power, User_Scheduling)
+        
+        res = jnp.stack(output) # turn into JAX array [n_qubits]
+        
+        target_dim = 5 # Action is 5-dim
+        
+        if self.n_qubits == target_dim:
+            return res
+        elif self.n_qubits > target_dim:
+            return res[:target_dim] # use the first 5
+        else:
+            # if qubits less than 5 we have to expand it
+            tiled = jnp.tile(res, int(jnp.ceil(target_dim / self.n_qubits)))
+            return tiled[:target_dim])
 
     def update_params(self, new_theta):
         self.theta = new_theta
@@ -55,14 +71,15 @@ class QuantumCritic:
         @qml.qnode(self.dev, interface="jax", diff_method="parameter-shift")
         def circuit(x, theta):
             theta = jnp.asarray(theta)
+            #first layer Hadamard layers for initializing superposition
             for i in range(n_qubits):
                 qml.Hadamard(wires=i)
-            for l in range(m_layers):
-                for i in range(n_qubits):
-                    qml.RX(x[i], wires=i)
-                for i in range(n_qubits - 1):
+            for l in range(m_layers): # we only have one layers
+                for i in range(len(x)): # this is the change we made we don't just go through the number of qubits we have but we go through the whole data
+                    qml.RX(x[i], wires=i) # we turn the whole data into quantum rotation angle
+                for i in range(n_qubits - 1): #entanglement
                     qml.CZ(wires=[i, i+1])
-                for i in range(n_qubits):
+                for i in range(n_qubits): #trainable parameter
                     qml.RY(theta[l][i], wires=i)
             return [qml.expval(qml.PauliZ(i)) for i in range(n_qubits)]
 
