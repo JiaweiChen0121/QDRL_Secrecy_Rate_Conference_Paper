@@ -170,7 +170,8 @@ class UAV_LQDRL_Environment(gym.Env):
         self.time = 0
         self.delta_t = 1
         self.num_uavs = 1
-        self.num_legit_users = 4
+        # self.num_legit_users = 4
+        self.num_legit_users = num_users # make the parameter changeable
         self.num_eves = 2
         self.K_FACTOR = 10
         self.SHADOWING_SIGMA = 4
