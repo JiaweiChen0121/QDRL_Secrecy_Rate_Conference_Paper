@@ -8,7 +8,7 @@ experiments = {
     "4 Qubits": "local_test_outputs/qdrl_uav_logs/exp_4u_4q",
 }
 
-metric_filename = "ep_secrecy_rates.csv"
+metric_filename = "secrecy_rates.csv"
 # metric_filename = "ep_rewards.csv"       
 
 results = {}
