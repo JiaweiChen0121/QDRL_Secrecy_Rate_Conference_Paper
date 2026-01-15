@@ -91,10 +91,10 @@ if __name__ == "__main__":  # add the protector
     args = parser.parse_args()
     
     # extract the parameters
-    N_QUBITS = args.qubits
-    N_USERS = args.users
+    N_qubits = args.qubits
+    N_users = args.users
     
-    print(f"=== activate simulations | Qubits: {N_QUBITS} | Users: {N_USERS} ===")
+    print(f"=== activate simulations | Qubits: {N_qubits} | Users: {N_users} ===")
     overall_start_time = time.time()
 
 all_uav_pos = []
@@ -110,7 +110,7 @@ for m in range(m_layers):
     print(f"============ Experiment with {m+1} Layers in Ansatz ============")
     #the numbers of GUs will change
     
-    env = UAV_LQDRL_Environment()
+    env = UAV_LQDRL_Environment(num_users = N_users)
     state_dim = env.observation_space.shape[0]
     action_dim = env.action_space.shape[0]
 
