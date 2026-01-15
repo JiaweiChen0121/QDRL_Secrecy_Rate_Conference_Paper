@@ -165,7 +165,7 @@ class UAVJammer(UAV):
 # Dynamic power and resource allocation
 # NOMA user group grouping
 class UAV_LQDRL_Environment(gym.Env):
-    def __init__(self):
+    def __init__(self,num_users = 4):
         super().__init__()
         self.time = 0
         self.delta_t = 1
