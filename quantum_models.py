@@ -49,7 +49,7 @@ class QuantumActor:
         else:
             # if qubits less than 5 we have to expand it
             tiled = jnp.tile(res, int(jnp.ceil(target_dim / self.n_qubits)))
-            return tiled[:target_dim])
+            return tiled[:target_dim]
 
     def update_params(self, new_theta):
         self.theta = new_theta
