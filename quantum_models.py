@@ -21,7 +21,7 @@ class QuantumActor:
                 qml.Hadamard(wires=i)
             for l in range(m_layers): # we only have one layers
                 for i in range(len(x)): # this is the change we made we don't just go through the number of qubits we have but we go through the whole data
-                    qml.RX(x[i], wires=i) # we turn the whole data into quantum rotation angle
+                    qml.RX(x[i], wires=i % n_qubits) # we turn the whole data into quantum rotation angle
                 for i in range(n_qubits - 1): #entanglement
                     qml.CZ(wires=[i, i+1])
                 for i in range(n_qubits): #trainable parameter
@@ -76,7 +76,7 @@ class QuantumCritic:
                 qml.Hadamard(wires=i)
             for l in range(m_layers): # we only have one layers
                 for i in range(len(x)): # this is the change we made we don't just go through the number of qubits we have but we go through the whole data
-                    qml.RX(x[i], wires=i) # we turn the whole data into quantum rotation angle
+                    qml.RX(x[i], wires=i % n_qubits) # we turn the whole data into quantum rotation angle
                 for i in range(n_qubits - 1): #entanglement
                     qml.CZ(wires=[i, i+1])
                 for i in range(n_qubits): #trainable parameter
