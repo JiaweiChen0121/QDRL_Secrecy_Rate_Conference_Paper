@@ -16,7 +16,8 @@ import random
 import time
 import math
 import os
-#import argparse
+#This is for changing the parameters qubits and GUs in the command
+import argparse
 import numpy as np
 import pandas as pd
 
@@ -77,7 +78,24 @@ from replay_buffer import ReplayBuffer
 from pennylane.optimize import AdamOptimizer
 from prioritised_experience_replay import SumTree, Memory
 
-overall_start_time = time.time()
+#change the parameter
+if __name__ == "__main__":  # add the protector
+    parser = argparse.ArgumentParser(description="QDRL Simulation with changeable parameters")
+    
+    # add --qubits parameter (default 4)
+    parser.add_argument('--qubits', type=int, default=4, help='Number of Qubits to use in VQC')
+    
+    # add --users parameter (default 10)
+    parser.add_argument('--users', type=int, default=10, help='Number of Ground Users (GUs)')
+    
+    args = parser.parse_args()
+    
+    # extract the parameters
+    N_QUBITS = args.qubits
+    N_USERS = args.users
+    
+    print(f"=== activate simulations | Qubits: {N_QUBITS} | Users: {N_USERS} ===")
+    overall_start_time = time.time()
 
 all_uav_pos = []
 all_secrecy_rates = []
@@ -90,6 +108,8 @@ all_dist_to_centroid = []
 m_layers = 1
 for m in range(m_layers):
     print(f"============ Experiment with {m+1} Layers in Ansatz ============")
+    #the numbers of GUs will change
+    
     env = UAV_LQDRL_Environment()
     state_dim = env.observation_space.shape[0]
     action_dim = env.action_space.shape[0]
