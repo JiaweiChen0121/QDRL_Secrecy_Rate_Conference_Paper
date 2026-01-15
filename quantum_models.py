@@ -34,7 +34,7 @@ class QuantumActor:
     def __call__(self, x, theta=None):
         theta = theta if theta is not None else self.theta
         # print("Theta Shape Within Actor __call__: ", theta.shape)
-        output = self.qnode(x, theta
+        output = self.qnode(x, theta)
         # circuits outputs is  list of scalars (length = n_qubits)
         # Action space is 5-dim (VX, VY, VZ, Power, User_Scheduling)
         
