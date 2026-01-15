@@ -61,12 +61,13 @@ def arrays_to_dataframes(ep_sum_rate_arr, ep_energy_eff_arr, ep_secrecy_rates_ar
     return dfs
 
 # === Save CSVs ===
-def save_csvs(dfs, logs_dir):
+def save_csvs(dfs, base_path):
+    os.makedirs(base_path, exist_ok=True) 
+    
     for name, df in dfs.items():
-        if not df.empty:
-            path = os.path.join(logs_dir, f"{name}.csv")
-            df.to_csv(path, index=False)
-            print(f"[LOG] Saved {path}")
+        path = os.path.join(base_path, f"{name}.csv")
+        df.to_csv(path, index=False)
+    print(f"Saved logs to {base_path}")
 
 def gradient_norm(grad):
     return jnp.sqrt(sum([jnp.sum(jnp.square(g)) for g in grad]))
@@ -87,6 +88,7 @@ if __name__ == "__main__":  # add the protector
     
     # add --users parameter (default 10)
     parser.add_argument('--users', type=int, default=10, help='Number of Ground Users (GUs)')
+    parser.add_argument('--save_dir', type=str, default='default_experiment', help='Directory to save logs')
     
     args = parser.parse_args()
     
@@ -326,7 +328,8 @@ for m in range(m_layers):
     print(f"Total Time Taken for Experiment with {m+1} Layers to Run: ", total_runtime)
 
 #logs_dir = os.path.join("qdrl_outputs/qdrl_uav_logs/test2")
-logs_dir = os.path.join("local_test_outputs/qdrl_uav_logs/test5")
+#logs_dir = os.path.join("local_test_outputs/qdrl_uav_logs/test5")
+logs_dir = os.path.join('local_test_outputs', 'qdrl_uav_logs', args.save_dir)
 #plots_dir = os.path.join("qdrl_outputs/qdrl_uav_plots/test2")
 plots_dir = os.path.join("local_test_outputs/qdrl_uav_plots/test5")
 
