@@ -114,8 +114,8 @@ for m in range(m_layers):
     state_dim = env.observation_space.shape[0]
     action_dim = env.action_space.shape[0]
 
-    actor = QuantumActor(n_qubits=state_dim, m_layers=m+1)
-    critic = QuantumCritic(n_qubits=state_dim + action_dim, m_layers=m+1)
+    actor = QuantumActor(n_qubits=N_qubits, m_layers=m+1)
+    critic = QuantumCritic(n_qubits=N_qubits, m_layers=m+1)
 
     capacity = 100000
     buffer = Memory(capacity)
