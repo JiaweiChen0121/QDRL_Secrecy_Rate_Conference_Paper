@@ -92,7 +92,7 @@ class QuantumCritic:
 
         @qml.qnode(self.dev, interface="jax")
         def circuit(x, theta):
-            n_data_layers = math.ceil(len(x) / n_qubits)
+            n_data_layers = math.ceil(len(x) + 5 / n_qubits)
             loops = max(n_data_layers, theta.shape[0]) 
             
             # --- Initialization ---
